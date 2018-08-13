@@ -13,6 +13,7 @@ package org.eclipse.dawnsci.remotedataset.server;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.eclipse.dawnsci.remotedataset.server.event.EventServlet;
 import org.eclipse.dawnsci.remotedataset.server.event.FileMonitorSocket;
 import org.eclipse.dawnsci.remotedataset.server.info.InfoServlet;
@@ -23,8 +24,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 /**
  * This object is designed to start the server and 
@@ -99,17 +98,6 @@ public class DataServer extends PortServer {
         // Slicing (large data in binary http)
 		ServletHolder holderSlice = new ServletHolder("slice", SliceServlet.class);
 		context.addServlet(holderSlice, "/slice/*");
-		
-		// Doing events, like data changing shape.
-		// FIXME Should not be needed
-		WebSocketHandler wsHandler = new WebSocketHandler() {
-			@Override
-			public void configure(WebSocketServletFactory factory) {
-				factory.register(FileMonitorSocket.class);
-			}
-		};
-		context.setHandler(wsHandler);
-		// FIXME End should not be needed.		
 		
 		ServletHolder holderInfo = new ServletHolder("info", InfoServlet.class);
 		context.addServlet(holderInfo, "/info/*");
