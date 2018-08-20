@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;

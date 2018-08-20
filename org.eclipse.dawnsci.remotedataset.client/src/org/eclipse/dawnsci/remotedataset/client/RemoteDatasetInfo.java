@@ -2,8 +2,6 @@ package org.eclipse.dawnsci.remotedataset.client;
 
 import java.util.List;
 
-import org.eclipse.january.dataset.ShapeUtils;
-
 public class RemoteDatasetInfo {
 	
 	private String name;
