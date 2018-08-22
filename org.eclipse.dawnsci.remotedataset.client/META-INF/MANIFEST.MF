@@ -4,7 +4,7 @@ Bundle-Name: Client
 Bundle-SymbolicName: org.eclipse.dawnsci.remotedataset.client
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Diamond Light Source
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.dawnsci.remotedataset.client,
  org.eclipse.dawnsci.remotedataset.client.dyn,
  org.eclipse.dawnsci.remotedataset.client.slice
@@ -22,3 +22,4 @@ Require-Bundle: org.eclipse.january;bundle-version="1.0.0",
  org.eclipse.jetty.client;bundle-version="9.2.13",
  org.eclipse.dawnsci.analysis.tree
 Import-Package: org.slf4j;version="1.7.2"
+Automatic-Module-Name: org.eclipse.dawnsci.remotedataset.client
