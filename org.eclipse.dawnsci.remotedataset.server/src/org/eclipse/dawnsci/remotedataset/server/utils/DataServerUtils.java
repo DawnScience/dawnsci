@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 public class DataServerUtils {
 	
 	private static Logger logger = LoggerFactory.getLogger(DataServerUtils.class);
+	
+	private DataServerUtils() {};
 
 	public static IDataHolder getDataHolderWithLogging(String path) throws Exception {
 		long startTime = System.currentTimeMillis();
-		final IDataHolder holder = ServiceHolder.getLoaderService().getData(path, new IMonitor.Stub()); // TOOD Make it cancellable?
+		final IDataHolder holder = ServiceHolder.getLoaderService().getData(path, true, new IMonitor.Stub());
 		
 		long endTime = System.currentTimeMillis()-startTime;
 		
