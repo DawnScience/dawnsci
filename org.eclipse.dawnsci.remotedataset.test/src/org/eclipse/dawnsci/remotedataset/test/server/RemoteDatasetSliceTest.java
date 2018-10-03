@@ -38,8 +38,7 @@ import org.junit.Test;
 
 public class RemoteDatasetSliceTest extends DataServerTest {
 
-	// For some reason this test intermittently crashes the test VM on travis.
-	//@Test
+	@Test
 	public void testRemoteSliceDirectory() throws Exception {
 		System.out.println("> testRemoteSliceDirectory start");
 		System.out.flush();
@@ -52,7 +51,7 @@ public class RemoteDatasetSliceTest extends DataServerTest {
 		data.setDatasetName("Image Stack"); // We get the stack.
 		data.connect();
 		
-        checkSlices(data);
+		checkSlices(data);
 		System.out.println("> testRemoteSliceDirectory ok");
 	}
 	
