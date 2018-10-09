@@ -68,7 +68,7 @@ public class RemoteDatasetTest extends DataServerTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testRemoteSlicingUsingSliceND() throws Exception {
 		IDatasetConnector rdata = null;
 		File h5File = null;
@@ -139,7 +139,7 @@ public class RemoteDatasetTest extends DataServerTest {
 			if (dir!=null) TestUtils.recursiveDelete(dir);
 		}
 	}
-	
+
 	@Test
 	public void testImageFileMonitoring() throws Exception {
 		
