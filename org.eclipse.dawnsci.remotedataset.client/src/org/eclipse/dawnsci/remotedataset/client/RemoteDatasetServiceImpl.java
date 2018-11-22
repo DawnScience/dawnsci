@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
 import org.eclipse.dawnsci.analysis.api.io.IRemoteDatasetService;
-import org.eclipse.dawnsci.analysis.api.persistence.IMarshallerService;
 import org.eclipse.dawnsci.remotedataset.Format;
 import org.eclipse.dawnsci.remotedataset.client.dyn.DynamicDatasetFactory;
 import org.eclipse.dawnsci.remotedataset.client.dyn.IDynamicMonitorDatasetHolder;
