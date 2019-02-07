@@ -17,6 +17,7 @@ import java.util.Map;
 import org.eclipse.dawnsci.remotedataset.server.event.EventServlet;
 import org.eclipse.dawnsci.remotedataset.server.event.FileMonitorSocket;
 import org.eclipse.dawnsci.remotedataset.server.info.InfoServlet;
+import org.eclipse.dawnsci.remotedataset.server.info.ShapesServlet;
 import org.eclipse.dawnsci.remotedataset.server.info.TreeServlet;
 import org.eclipse.dawnsci.remotedataset.server.slice.SliceServlet;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -104,6 +105,9 @@ public class DataServer extends PortServer {
 		
 		ServletHolder holderTree = new ServletHolder("tree", TreeServlet.class);
 		context.addServlet(holderTree, "/tree/*");
+		
+		ServletHolder holderShapes = new ServletHolder("shapes", ShapesServlet.class);
+		context.addServlet(holderShapes, "/shapes/*");
 
      
 		// Events json objects to notify of problems.

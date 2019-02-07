@@ -1,17 +1,16 @@
-/*-
- *******************************************************************************
- * Copyright (c) 2011, 2015 Diamond Light Source Ltd.
+/*
+ * Copyright (c) 2019 Diamond Light Source Ltd.
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Matthew Gerring - initial API and implementation and/or initial documentation
- *******************************************************************************/
+ */
+
 package org.eclipse.dawnsci.remotedataset.server.info;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
 import org.eclipse.dawnsci.analysis.api.persistence.IMarshallerService;
-import org.eclipse.dawnsci.analysis.api.tree.Tree;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
 import org.eclipse.dawnsci.remotedataset.XMLMarshallerService;
 import org.eclipse.dawnsci.remotedataset.server.utils.DataServerUtils;
@@ -29,46 +27,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The handler for incoming requests. No work should be done here
- * the request should be delegated down to the backing LoaderFactory instance
- * using the current session.
- * 
- * In this way if someone does a slice which is time consuming, another request coming
- * in will not be blocked while it is done.
- * 
- * Gives info about a given ILazyDataset, specifically:
- * name
- * shape
- * dType
- * elements per item
- * 
- * For example: http://localhost:8080/info/?path=c%3A/Work/results/TomographyDataSet.hdf5
- * Gives:
- * 
-dark_data
-[37, 1024, 1024]
-2
-1
-  
- * Or: http://localhost:8080/info/?path=c%3A/Work/results/TomographyDataSet.hdf5&dataset=/entry/exchange/data
- * Gives:
-data
-[720, 1024, 1024]
-2
-1
- * 
- * @author Matthew Gerring
  *
  */
-public class TreeServlet extends HttpServlet {
+public class ShapesServlet extends HttpServlet {
 			
- 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9159927667493661200L;
+	private static final long serialVersionUID = 5069190236143524266L;
 	
-	private static Logger logger = LoggerFactory.getLogger(TreeServlet.class);
+	private static Logger logger = LoggerFactory.getLogger(ShapesServlet.class);
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	doHandle(req, resp);
@@ -97,17 +65,16 @@ public class TreeServlet extends HttpServlet {
 			ServiceHolder.getLoaderService().clearSoftReferenceCache();
 			
 			final IDataHolder holder = DataServerUtils.getDataHolderWithLogging(path);
-			final Tree tree = holder.getTree();
+			//needs a clone, or doesn't serialise
+			final Map<String, int[]> shapes = new HashMap<String, int[]> (holder.getDatasetShapes());
 			
-			
-			Map<String,Object> map = TreeToMapUtils.treeToMap(tree);
 			IMarshallerService mservice = new XMLMarshallerService();
-			final String xml = mservice.marshal(map);
+			final String xml = mservice.marshal(shapes);
 			response.setContentType("text/xml;charset=utf-8");
 			response.getWriter().println(xml);
 		   
 		} catch (Exception e) {
-			logger.info("Read of tree from {} failed due to {}", path, e.getMessage());
+			logger.info("Read of shapes from {} failed due to {}", path, e.getMessage());
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().println("<h1>"+e.getMessage()+"</h1>");

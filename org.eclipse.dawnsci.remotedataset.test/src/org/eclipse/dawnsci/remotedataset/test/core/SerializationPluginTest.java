@@ -13,6 +13,7 @@ package org.eclipse.dawnsci.remotedataset.test.core;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
@@ -23,7 +24,9 @@ import org.eclipse.dawnsci.analysis.api.tree.Node;
 import org.eclipse.dawnsci.analysis.api.tree.NodeLink;
 import org.eclipse.dawnsci.analysis.api.tree.Tree;
 import org.eclipse.dawnsci.analysis.api.tree.TreeUtils;
-import org.eclipse.dawnsci.analysis.tree.TreeToMapUtils;
+import org.eclipse.dawnsci.remotedataset.client.MapToTreeUtils;
+import org.eclipse.dawnsci.remotedataset.client.RemoteLoaderWithLazyDataset;
+import org.eclipse.dawnsci.remotedataset.server.info.TreeToMapUtils;
 import org.eclipse.dawnsci.remotedataset.test.ServiceHolder;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +67,8 @@ public class SerializationPluginTest {
 		
 		assertTrue(map.keySet().containsAll(ntree.keySet()));
 		
-		Tree myTree = TreeToMapUtils.mapToTree(ntree, "38323_processed.nxs");
+		Map<String,RemoteLoaderWithLazyDataset> loadermap = new HashMap<>();
+		Tree myTree = MapToTreeUtils.mapToTree(ntree, "38323_processed.nxs","localhost",8690,loadermap);
 		
 		Map<String, NodeLink> bfst = TreeUtils.treeBreadthFirstSearch(myTree.getGroupNode(), getFinder(), true, null);
 		String keyt = bfst.keySet().iterator().next();

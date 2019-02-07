@@ -29,5 +29,6 @@ Import-Package: hdf.hdf5lib.exceptions,
  org.slf4j;version="1.7.2"
 Eclipse-RegisterBuddy:  org.eclipse.jetty.websocket.server, org.eclipse.jetty.websocket.servlet
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.dawnsci.remotedataset.server
+Export-Package: org.eclipse.dawnsci.remotedataset.server,
+ org.eclipse.dawnsci.remotedataset.server.info
 Automatic-Module-Name: org.eclipse.dawnsci.remotedataset.server

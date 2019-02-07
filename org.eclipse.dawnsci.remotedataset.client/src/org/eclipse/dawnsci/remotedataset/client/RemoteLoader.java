@@ -26,7 +26,7 @@ import org.eclipse.january.dataset.SliceND;
 import org.eclipse.january.io.ILazyDynamicLoader;
 import org.eclipse.january.io.ILazyLoader;
 
-class RemoteLoader implements ILazyLoader,ILazyDynamicLoader {
+public class RemoteLoader implements ILazyLoader,ILazyDynamicLoader {
 
 	/**
 	 * 

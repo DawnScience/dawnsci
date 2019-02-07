@@ -96,6 +96,10 @@ public class URLBuilder {
 	public String getTreeURL() throws Exception {
 		return getURL("http", "/tree/", false);
 	}
+	
+	public String getShapesURL() throws Exception {
+		return getURL("http", "/shapes/", false);
+	}
 
 	private String getURL(String proto, String servlet, boolean isSlice) throws Exception {
 		

@@ -17,6 +17,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
+import org.eclipse.dawnsci.analysis.api.io.IRemoteDataHolder;
 import org.eclipse.dawnsci.analysis.api.io.IRemoteDatasetService;
 import org.eclipse.dawnsci.remotedataset.Format;
 import org.eclipse.dawnsci.remotedataset.client.dyn.DynamicDatasetFactory;
@@ -76,7 +77,7 @@ public class RemoteDatasetServiceImpl implements IRemoteDatasetService {
 		return new RemoteData(this, serverName, port, getExecutor());
 	}
 	
-	public IDataHolder createRemoteDataHolder(String path, String serverName, int port) {
-		return new RemoteDataHolder(path, serverName, port);
+	public IRemoteDataHolder createRemoteDataHolder(String path, String serverName, int port, boolean failForSymbolic) {
+		return new RemoteDataHolder(path, serverName, port, failForSymbolic);
 	}
 }

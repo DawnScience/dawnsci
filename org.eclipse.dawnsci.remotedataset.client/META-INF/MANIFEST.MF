@@ -21,5 +21,6 @@ Require-Bundle: org.eclipse.january;bundle-version="1.0.0",
  org.eclipse.jetty.websocket.common;bundle-version="9.2.13",
  org.eclipse.jetty.client;bundle-version="9.2.13",
  org.eclipse.dawnsci.analysis.tree
-Import-Package: org.slf4j;version="1.7.2"
+Import-Package: org.slf4j;version="1.7.2",
+ uk.ac.diamond.scisoft.analysis.io
 Automatic-Module-Name: org.eclipse.dawnsci.remotedataset.client

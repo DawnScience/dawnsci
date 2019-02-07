@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
 import org.eclipse.dawnsci.analysis.api.io.IFileLoader;
@@ -442,6 +443,17 @@ public class MockDataHolder implements IMetadataProvider, IDataHolder, Serializa
 		} else if (!nameDataMappings.equals(other.nameDataMappings))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public Map<String, int[]> getDatasetShapes() {
+		Map<String, int[]> output = new LinkedHashMap<>();
+		
+		for (Entry<String, ILazyDataset> e : nameDataMappings.entrySet()) {
+			output.put(e.getKey(), e.getValue().getShape());
+		}
+		
+		return output;
 	}
 
 }

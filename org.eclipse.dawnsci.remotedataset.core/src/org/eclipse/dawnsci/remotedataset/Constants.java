@@ -17,5 +17,5 @@ public class Constants {
     
     public static final String MCONTENT_TYPE = "multipart/x-mixed-replace";
     public static final String JPG_TYPE      = "image/jpeg";
-	public static final String OBJECT_TYPE   = "java/object";
+	public static final String OBJECT_TYPE   = "java/object";	
 }
