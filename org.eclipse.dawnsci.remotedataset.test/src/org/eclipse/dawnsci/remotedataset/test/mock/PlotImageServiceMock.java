@@ -43,6 +43,7 @@ import org.eclipse.january.dataset.DatasetFactory;
 import org.eclipse.january.dataset.DatasetUtils;
 import org.eclipse.january.dataset.DoubleDataset;
 import org.eclipse.january.dataset.IDataset;
+import org.eclipse.january.dataset.IntegerDataset;
 import org.eclipse.january.dataset.RGBDataset;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -153,7 +154,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 	 */
 	public Image createImageSWT(final IDataset thumbnail, ImageServiceBean bean) throws Exception {
         
-		final ScopedPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "org.dawnsci.plotting");
+		final ScopedPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, IPlottingSystem.PREFERENCE_STORE);
 		
 		if (bean==null) {
 			bean = new ImageServiceBean();
@@ -227,8 +228,9 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 						List<? extends IDataset> oaxes = trace.getAxes();
 						List<IDataset> axes  = new ArrayList<IDataset>(3);
 						if (oaxes==null) {
-							axes.add(DatasetFactory.createRange(set.getShape()[1], Dataset.INT));
-							axes.add(DatasetFactory.createRange(set.getShape()[0], Dataset.INT));
+							int[] shape = set.getShape();
+							axes.add(DatasetFactory.createRange(IntegerDataset.class, shape[1]));
+							axes.add(DatasetFactory.createRange(IntegerDataset.class, shape[0]));
 						} else {
 							axes.add(oaxes.get(0));
 							axes.add(oaxes.get(1));
@@ -237,7 +239,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 						// z only gets larger
 						double zLow = Math.min(data.getzLower(), set.min().doubleValue());
 						double zUp  = Math.max(data.getzUpper(), set.max().doubleValue());
-						IDataset z  = DatasetFactory.createRange(zLow, zUp, (zUp-zLow)/1000, Dataset.FLOAT);
+						IDataset z  = DatasetFactory.createRange(zLow, zUp, (zUp-zLow)/1000);
 						axes.add(z);
 						
 						trace.setData(data.getData(), axes);
