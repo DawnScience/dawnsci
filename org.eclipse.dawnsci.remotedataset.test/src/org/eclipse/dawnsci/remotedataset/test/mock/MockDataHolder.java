@@ -353,7 +353,6 @@ public class MockDataHolder implements IMetadataProvider, IDataHolder, Serializa
 	 * @return class
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Class<? extends IFileLoader> getLoaderClass() {
 		return null;
 	}
