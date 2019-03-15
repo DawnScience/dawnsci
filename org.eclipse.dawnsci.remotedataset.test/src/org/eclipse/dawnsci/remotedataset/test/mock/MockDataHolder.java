@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
  * This implementation does not permit duplicated names.
  */
 public class MockDataHolder implements IMetadataProvider, IDataHolder, Serializable {
-	
+
+	private static final long serialVersionUID = 7555446959963559418L;
+
 	protected static final Logger logger = LoggerFactory.getLogger(MockDataHolder.class);
 
 	/**
@@ -353,7 +355,6 @@ public class MockDataHolder implements IMetadataProvider, IDataHolder, Serializa
 	 * @return class
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Class<? extends IFileLoader> getLoaderClass() {
 		return null;
 	}

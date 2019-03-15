@@ -12,8 +12,6 @@ import org.eclipse.dawnsci.analysis.api.io.IDataHolder;
 import org.eclipse.dawnsci.analysis.api.io.ILoaderService;
 import org.eclipse.dawnsci.analysis.api.tree.Tree;
 import org.eclipse.dawnsci.remotedataset.client.MapToTreeUtils;
-import org.eclipse.dawnsci.remotedataset.client.RemoteDataHolder;
-import org.eclipse.dawnsci.remotedataset.client.RemoteLoader;
 import org.eclipse.dawnsci.remotedataset.client.RemoteLoaderWithLazyDataset;
 import org.eclipse.dawnsci.remotedataset.server.info.TreeToMapUtils;
 import org.eclipse.january.dataset.ILazyDataset;

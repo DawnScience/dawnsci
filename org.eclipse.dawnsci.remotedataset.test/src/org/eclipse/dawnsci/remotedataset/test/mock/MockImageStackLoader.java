@@ -42,6 +42,8 @@ import org.eclipse.january.metadata.Metadata;
  */
 public class MockImageStackLoader implements ILazyLoader {
 
+	private static final long serialVersionUID = -2800972704285452613L;
+
 	private StringDataset filenames;
 	private int[] fShape; // filename shape
 	private long[] mShape; // max total shape

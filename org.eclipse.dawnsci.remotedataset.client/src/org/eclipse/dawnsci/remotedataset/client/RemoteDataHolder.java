@@ -27,7 +27,9 @@ import uk.ac.diamond.scisoft.analysis.io.DataHolder;
 
 
 public class RemoteDataHolder extends DataHolder implements IRemoteDataHolder {
-	
+
+	private static final long serialVersionUID = 8895903503246027735L;
+
 	/**
 	 * List containing all the name and data pairs (to be) loaded.
 	 */
