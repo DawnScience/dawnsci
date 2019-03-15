@@ -197,6 +197,9 @@ public class MockJavaImageLoader extends MockAbstractFileLoader {
 				int dtype = AWTImageUtils.getDTypeFromImage(sm, keepBitWidth)[0];
 				final String name = String.format(IMAGE_NAME_FORMAT, j);
 				LazyDataset lazy = createLazyDataset(name, dtype, shape, new LazyLoaderStub() {
+
+					private static final long serialVersionUID = -3041848009372098646L;
+
 					@Override
 					public IDataset getDataset(IMonitor mon, SliceND slice) throws IOException {
 						Dataset data = loadDataset(fileName, name, asGrey, keepBitWidth);

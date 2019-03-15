@@ -169,6 +169,9 @@ public class MockImageLoader extends MockJavaImageLoader {
 
 	private ILazyDataset createLazyDataset(final int dtype, final int... trueShape) {
 		LazyLoaderStub l = new LazyLoaderStub() {
+
+			private static final long serialVersionUID = -5750071672107316167L;
+
 			@Override
 			public IDataset getDataset(IMonitor mon, SliceND slice) throws IOException {
 				int[] lstart = slice.getStart();
