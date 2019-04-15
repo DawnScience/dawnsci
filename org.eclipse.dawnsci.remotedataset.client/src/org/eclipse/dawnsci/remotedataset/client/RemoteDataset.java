@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
@@ -112,6 +113,80 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 		urlBuilder.setWritingExpected(true);
 		this.exec       = exec;
 		this.loader = new RemoteLoader(urlBuilder);
+	}
+
+	RemoteDataset(RemoteDataset other) {
+		super(other);
+
+		urlBuilder = other.urlBuilder;
+		connection = other.connection;
+		dynamicShape = other.dynamicShape;
+		transShape = other.transShape;
+		exec = other.exec;
+		client = other.client;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + ((connection == null) ? 0 : connection.hashCode());
+		result = prime * result + (dynamicShape ? 1231 : 1237);
+		result = prime * result + ((exec == null) ? 0 : exec.hashCode());
+		result = prime * result + Arrays.hashCode(transShape);
+		result = prime * result + ((urlBuilder == null) ? 0 : urlBuilder.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RemoteDataset other = (RemoteDataset) obj;
+		if (client == null) {
+			if (other.client != null) {
+				return false;
+			}
+		} else if (!client.equals(other.client)) {
+			return false;
+		}
+		if (connection == null) {
+			if (other.connection != null) {
+				return false;
+			}
+		} else if (!connection.equals(other.connection)) {
+			return false;
+		}
+		if (dynamicShape != other.dynamicShape) {
+			return false;
+		}
+		if (exec == null) {
+			if (other.exec != null) {
+				return false;
+			}
+		} else if (!exec.equals(other.exec)) {
+			return false;
+		}
+		if (!Arrays.equals(transShape, other.transShape)) {
+			return false;
+		}
+		if (urlBuilder == null) {
+			if (other.urlBuilder != null) {
+				return false;
+			}
+		} else if (!urlBuilder.equals(other.urlBuilder)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -325,29 +400,9 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 	public IDynamicDataset getDataset() {
 		return this;
 	}
-	
+
 	@Override
 	public RemoteDataset clone() {
-		RemoteDataset ret = new RemoteDataset(urlBuilder.getServerName(),urlBuilder.getPort(),this.exec);
-		ret.urlBuilder.setDataset(this.urlBuilder.getDataset());
-		ret.urlBuilder.setPath(this.urlBuilder.getPath());
-		ret.client = this.client;
-		ret.connection = this.connection;
-		ret.loader = this.loader;
-		ret.shape = shape;
-		ret.size = size;
-		ret.maxShape = maxShape;
-		ret.oShape = oShape;
-		ret.prepShape = prepShape;
-		ret.postShape = postShape;
-		ret.begSlice = begSlice;
-		ret.delSlice = delSlice;
-		ret.map = map;
-		ret.base = base;
-		ret.metadata = copyMetadata();
-		ret.oMetadata = oMetadata;
-		ret.eventDelegate = eventDelegate;
-		ret.name = this.name;
-		return ret;
+		return new RemoteDataset(this);
 	}
 }
