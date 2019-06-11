@@ -62,7 +62,6 @@ public class MockImageStackLoader implements ILazyLoader {
 		this(imageFilenames, service.getData(imageFilenames.get(0), mon), mon);
 	}
 
-	@SuppressWarnings("unused")
 	public MockImageStackLoader(List<String> imageFilenames, IDataHolder dh, IMonitor mon) throws Exception {
 		this((StringDataset) DatasetFactory.createFromList(imageFilenames), dh, null);
 	}

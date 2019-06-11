@@ -274,7 +274,7 @@ public class MockJavaImageLoader extends MockAbstractFileLoader {
 		return null;
 	}
 
-	protected void createMetadata(IDataHolder output, @SuppressWarnings("unused") ImageReader reader) {
+	protected void createMetadata(IDataHolder output, ImageReader reader) {
 		metadata = new Metadata();
 		metadata.setFilePath(fileName);
 		for (String n : output.getNames()) {
