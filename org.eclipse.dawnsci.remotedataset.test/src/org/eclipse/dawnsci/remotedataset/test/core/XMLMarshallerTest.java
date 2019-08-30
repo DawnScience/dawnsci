@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.dawnsci.analysis.api.persistence.IMarshallerService;
 import org.eclipse.dawnsci.remotedataset.XMLMarshallerService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +69,7 @@ public class XMLMarshallerTest {
         String[] maxes = (String[])((Map)((Map)((Map)map.get("/")).get("entry")).get("mandelbrot_spectrum")).get("axes");
         String[] paxes = (String[])((Map)((Map)((Map)pam.get("/")).get("entry")).get("mandelbrot_spectrum")).get("axes");
 
-        assertEquals(maxes, paxes);
+        Assert.assertArrayEquals(maxes, paxes);
 	}
 
 
