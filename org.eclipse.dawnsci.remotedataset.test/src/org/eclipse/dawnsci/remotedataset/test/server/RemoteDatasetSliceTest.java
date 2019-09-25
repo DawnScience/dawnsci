@@ -25,11 +25,10 @@ import org.eclipse.dawnsci.plotting.api.histogram.ImageServiceBean;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
 import org.eclipse.dawnsci.remotedataset.client.RemoteDatasetServiceImpl;
 import org.eclipse.january.IMonitor;
-import org.eclipse.january.dataset.Dataset;
 import org.eclipse.january.dataset.IDataset;
+import org.eclipse.january.dataset.IDatasetConnector;
 import org.eclipse.january.dataset.ILazyDataset;
 import org.eclipse.january.dataset.ILazyWriteableDataset;
-import org.eclipse.january.dataset.IDatasetConnector;
 import org.eclipse.january.dataset.LazyWriteableDataset;
 import org.eclipse.january.dataset.Random;
 import org.eclipse.january.dataset.Slice;
@@ -138,7 +137,7 @@ public class RemoteDatasetSliceTest extends DataServerTest {
 			
 			final int[] shape = new int[]{1, shapeImage[0], shapeImage[1]};
 			final int[] max   = new int[]{-1, shapeImage[0], shapeImage[1]};
-			ILazyWriteableDataset writer = new LazyWriteableDataset("image", Dataset.FLOAT, shape, max, shape, null); // DO NOT COPY!
+			ILazyWriteableDataset writer = new LazyWriteableDataset("image", Double.class, shape, max, shape, null); // DO NOT COPY!
 			file.createData(par, writer); 
 			
 			int index = 0;

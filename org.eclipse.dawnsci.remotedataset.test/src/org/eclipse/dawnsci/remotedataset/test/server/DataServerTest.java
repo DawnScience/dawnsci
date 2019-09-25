@@ -34,11 +34,10 @@ import org.eclipse.dawnsci.remotedataset.test.mock.LoaderServiceMock;
 import org.eclipse.dawnsci.remotedataset.test.mock.PlotImageServiceMock;
 import org.eclipse.january.IMonitor;
 import org.eclipse.january.dataset.DataEvent;
-import org.eclipse.january.dataset.Dataset;
 import org.eclipse.january.dataset.IDataListener;
 import org.eclipse.january.dataset.IDataset;
-import org.eclipse.january.dataset.ILazyWriteableDataset;
 import org.eclipse.january.dataset.IDatasetConnector;
+import org.eclipse.january.dataset.ILazyWriteableDataset;
 import org.eclipse.january.dataset.LazyWriteableDataset;
 import org.eclipse.january.dataset.Random;
 import org.eclipse.swt.graphics.ImageData;
@@ -134,7 +133,7 @@ public class DataServerTest {
 
 					final int[] shape = new int[] { 1, 64, 64 };
 					final int[] max = new int[] { -1, 64, 64 };
-					writer = new LazyWriteableDataset("image", Dataset.FLOAT, shape, max, shape, null); // DO NOT COPY!
+					writer = new LazyWriteableDataset("image", Double.class, shape, max, shape, null); // DO NOT COPY!
 					file.createData(par, writer);
 
 					int index = 0;
