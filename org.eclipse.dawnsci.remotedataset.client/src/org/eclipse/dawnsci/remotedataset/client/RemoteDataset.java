@@ -24,6 +24,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.january.DatasetException;
+import org.eclipse.january.IMonitor;
+import org.eclipse.january.dataset.DTypeUtils;
 import org.eclipse.january.dataset.DataEvent;
 import org.eclipse.january.dataset.Dataset;
 import org.eclipse.january.dataset.IDataListener;
@@ -31,7 +33,9 @@ import org.eclipse.january.dataset.IDatasetConnector;
 import org.eclipse.january.dataset.IDynamicDataset;
 import org.eclipse.january.dataset.LazyWriteableDataset;
 import org.eclipse.january.dataset.ShapeUtils;
+import org.eclipse.january.dataset.SliceND;
 import org.eclipse.january.metadata.DynamicConnectionInfo;
+import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
@@ -84,6 +88,8 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 
 	private WebSocketClient client;
 
+	private Class<? extends Dataset> myClass;
+
 	/**
 	 * 
 	 */
@@ -108,11 +114,12 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 	 * @param port
 	 */
 	public RemoteDataset(String serverName, int port, Executor exec) {
-		super("unknown", Dataset.INT, new int[]{1}, new int[]{IDynamicDataset.UNLIMITED}, null, null);
+		super("unknown", Integer.class, new int[]{1}, new int[]{IDynamicDataset.UNLIMITED}, null, null);
 		this.urlBuilder = new URLBuilder(serverName, port);
 		urlBuilder.setWritingExpected(true);
 		this.exec       = exec;
 		this.loader = new RemoteLoader(urlBuilder);
+		myClass = super.getInterface();
 	}
 
 	RemoteDataset(RemoteDataset other) {
@@ -124,6 +131,7 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 		transShape = other.transShape;
 		exec = other.exec;
 		client = other.client;
+		myClass = other.myClass;
 	}
 
 	@Override
@@ -136,6 +144,7 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 		result = prime * result + ((exec == null) ? 0 : exec.hashCode());
 		result = prime * result + Arrays.hashCode(transShape);
 		result = prime * result + ((urlBuilder == null) ? 0 : urlBuilder.hashCode());
+		result = prime * result + ((myClass == null) ? 0 : myClass.hashCode());
 		return result;
 	}
 
@@ -186,6 +195,13 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 			return false;
 		}
 
+		if (myClass == null) {
+			if (other.myClass != null) {
+				return false;
+			}
+		} else if (!myClass.equals(other.myClass)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -251,7 +267,9 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 		
         URI uri = URI.create(urlBuilder.getEventURL());
 
-        this.client = new WebSocketClient(exec);
+        HttpClient httpClient = new HttpClient();
+        httpClient.setExecutor(exec);
+        this.client = new WebSocketClient(httpClient);
         client.start();
        
         final DataEventSocket clientSocket = new DataEventSocket();
@@ -315,7 +333,9 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 		}
 		setMax(shape);
 		this.oShape = shape;
-		this.dtype = Integer.parseInt(info.get(2));
+		// TODO switch to interface name, also modify InfoServlet
+		myClass = DTypeUtils.getInterface(Integer.parseInt(info.get(2)));
+		
 		this.isize = Integer.parseInt(info.get(3));
 		try {
 			size = ShapeUtils.calcLongSize(shape);
@@ -327,6 +347,21 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 			setMaxShape(toIntArray(info.get(4)));
 			setChunking(toIntArray(info.get(5)));
 		}
+	}
+
+	@Override
+	public int getDType() {
+		return DTypeUtils.getDType(myClass);
+	}
+
+	@Override
+	public Class<? extends Dataset> getInterface() {
+		return myClass;
+	}
+
+	@Override
+	public Dataset getSlice(IMonitor monitor, SliceND slice) throws DatasetException {
+		return super.getSlice(monitor, slice).cast(myClass);
 	}
 
 	private int[] toIntArray(String array) {
