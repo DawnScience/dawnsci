@@ -16,7 +16,7 @@
 	<modules>
 <module>org.eclipse.dawnsci.analysis.api</module>
 <module>org.eclipse.dawnsci.analysis.dataset</module>
-<!-- module>org.eclipse.dawnsci.analysis.dataset.test</module -->
+<module>org.eclipse.dawnsci.analysis.dataset.test</module>
 <module>org.eclipse.dawnsci.analysis.examples</module>
 <module>org.eclipse.dawnsci.analysis.tree</module>
 <module>org.eclipse.dawnsci.feature</module>
