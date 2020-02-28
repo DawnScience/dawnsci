@@ -9,7 +9,7 @@
  * Contributors:
  *    Matthew Gerring - initial API and implementation and/or initial documentation
  *******************************************************************************/
-package org.eclipse.dawnsci.remotedataset.test.mock;
+package org.eclipse.dawnsci.remotedataset.test.utilities.mock;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ import java.util.Arrays;
 import org.eclipse.dawnsci.remotedataset.Format;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
 import org.eclipse.dawnsci.remotedataset.client.slice.SliceClient;
-import org.eclipse.dawnsci.remotedataset.test.mock.LoaderServiceMock;
+import org.eclipse.dawnsci.remotedataset.test.utilities.mock.LoaderServiceMock;
 import org.eclipse.january.dataset.IDataset;
 import org.junit.Before;
 import org.junit.Test;

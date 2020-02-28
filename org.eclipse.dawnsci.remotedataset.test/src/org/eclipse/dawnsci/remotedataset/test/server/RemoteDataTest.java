@@ -20,7 +20,7 @@ import org.eclipse.dawnsci.analysis.api.io.IRemoteDatasetService;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
 import org.eclipse.dawnsci.remotedataset.client.RemoteDatasetServiceImpl;
 import org.eclipse.dawnsci.remotedataset.server.info.TreeToMapUtils;
-import org.eclipse.dawnsci.remotedataset.test.mock.LoaderServiceMock;
+import org.eclipse.dawnsci.remotedataset.test.utilities.mock.LoaderServiceMock;
 import org.eclipse.january.dataset.IRemoteData;
 import org.junit.Before;
 import org.junit.Test;

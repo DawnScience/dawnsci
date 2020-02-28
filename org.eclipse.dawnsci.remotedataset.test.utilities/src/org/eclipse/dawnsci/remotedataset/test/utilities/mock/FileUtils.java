@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */ 
 
-package org.eclipse.dawnsci.remotedataset.test.mock;
+package org.eclipse.dawnsci.remotedataset.test.utilities.mock;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

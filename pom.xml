@@ -11,12 +11,13 @@
 <groupId>uk.ac.diamond</groupId>
 <artifactId>uk.ac.diamond.aggregator</artifactId>
 <version>1.0.0-SNAPSHOT</version>
+<relativePath>../daq-aggregator</relativePath>
 </parent>
 
 	<modules>
 <module>org.eclipse.dawnsci.analysis.api</module>
 <module>org.eclipse.dawnsci.analysis.dataset</module>
-<module>org.eclipse.dawnsci.analysis.dataset.test</module>
+<!--module>org.eclipse.dawnsci.analysis.dataset.test</module-->
 <module>org.eclipse.dawnsci.analysis.examples</module>
 <module>org.eclipse.dawnsci.analysis.tree</module>
 <module>org.eclipse.dawnsci.feature</module>
@@ -31,15 +32,17 @@
 <module>org.eclipse.dawnsci.nexus</module>
 <module>org.eclipse.dawnsci.nexus.template</module>
 <module>org.eclipse.dawnsci.nexus.template.feature</module>
-<!-- module>org.eclipse.dawnsci.nexus.template.test</module -->
-<!-- module>org.eclipse.dawnsci.nexus.test</module -->
+<!--module>org.eclipse.dawnsci.nexus.template.test</module-->
+<!--module>org.eclipse.dawnsci.nexus.test</module-->
+<module>org.eclipse.dawnsci.nexus.test.utilities</module>
 <module>org.eclipse.dawnsci.plotting.api</module>
 <module>org.eclipse.dawnsci.plotting.examples</module>
 <module>org.eclipse.dawnsci.remotedataset.client</module>
 <module>org.eclipse.dawnsci.remotedataset.core</module>
 <module>org.eclipse.dawnsci.remotedataset.feature</module>
 <module>org.eclipse.dawnsci.remotedataset.server</module>
-<!--module>org.eclipse.dawnsci.remotedataset.test</module-->
+<module>org.eclipse.dawnsci.remotedataset.test</module>
+<module>org.eclipse.dawnsci.remotedataset.test.utilities</module>
 <module>org.eclipse.dawnsci.slicing.api</module>
 <!--
 <module>org.eclipse.dawnsci.targetplatform</module>
