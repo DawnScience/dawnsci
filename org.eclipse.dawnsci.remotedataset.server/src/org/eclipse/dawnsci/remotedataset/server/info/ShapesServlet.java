@@ -74,7 +74,7 @@ public class ShapesServlet extends HttpServlet {
 			response.getWriter().println(xml);
 		   
 		} catch (Exception e) {
-			logger.info("Read of shapes from {} failed due to {}", path, e.getMessage());
+			logger.error("Read of shapes from {} failed due to {}", path, e.getMessage());
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().println("<h1>"+e.getMessage()+"</h1>");

@@ -118,7 +118,7 @@ public class InfoServlet extends HttpServlet {
 			}
 		   
 		} catch (Exception e) {
-			logger.trace("Invalid dataset loaded from "+path, e);
+			logger.error("Invalid dataset loaded from "+path, e);
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().println("<h1>"+e.getMessage()+"</h1>");

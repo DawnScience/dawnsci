@@ -22,7 +22,7 @@ public class DataServerUtils {
 		long minWarn = Long.getLong("org.eclipse.dawnsci.remotedataset.server.logging.minwarn", 500);
 		
 		if (endTime > minInfo && endTime < minWarn) {
-			logger.info("Read of data holder from {} took {} ms", path, endTime);
+			logger.debug("Read of data holder from {} took {} ms", path, endTime);
 		} else if (endTime >= minWarn) {
 			logger.warn("Read of data holder from {} took {} ms", path, endTime);
 		}

@@ -107,7 +107,7 @@ public class TreeServlet extends HttpServlet {
 			response.getWriter().println(xml);
 		   
 		} catch (Exception e) {
-			logger.info("Read of tree from {} failed due to {}", path, e.getMessage());
+			logger.error("Read of tree from {} failed due to {}", path, e.getMessage());
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().println("<h1>"+e.getMessage()+"</h1>");

@@ -203,7 +203,7 @@ class SliceRequest implements HttpSessionBindingListener {
 		long endTime = System.currentTimeMillis()-startTime;
 		
 		if (endTime > 100 && endTime < 500) {
-			logger.info("Read of data slice {} from {} took {} ms", Slice.createString(slices), lz.getName(), endTime);
+			logger.debug("Read of data slice {} from {} took {} ms", Slice.createString(slices), lz.getName(), endTime);
 		} else if (endTime >= 500) {
 			logger.warn("Read of data slice {} from {} took {} ms",Slice.createString(slices), lz.getName(), endTime);
 		}
