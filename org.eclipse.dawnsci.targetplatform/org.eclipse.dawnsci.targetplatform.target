@@ -37,7 +37,6 @@
 			<unit id="javax.vecmath" version="0.0.0"/>
 			<unit id="org.yaml.snakeyaml" version="0.0.0"/>
 			<unit id="pl.pragmatists.JUnitParams" version="0.0.0"/>
-			<unit id="uk.ac.diamond.org.jscience4" version="0.0.0"/>
 			<unit id="org.epics.jca" version="0.0.0"/>
 			<unit id="org.epics.pvaccess" version="0.0.0"/>
 			<unit id="org.epics.pvdata" version="0.0.0"/>
