@@ -50,7 +50,7 @@ public class MockDataHolder implements IMetadataProvider, IDataHolder, Serializa
 
 	private static final long serialVersionUID = 7555446959963559418L;
 
-	protected static final Logger logger = LoggerFactory.getLogger(MockDataHolder.class);
+	private static final Logger logger = LoggerFactory.getLogger(MockDataHolder.class);
 
 	/**
 	 * List containing all the name and data pairs (to be) loaded.

@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 		
-	protected static final Logger logger = LoggerFactory.getLogger(AbstractNonCachingStreamer.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractNonCachingStreamer.class);
 
 	private BlockingQueue<byte[]> queue;
 	private InputStream      in;

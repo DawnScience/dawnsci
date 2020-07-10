@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
 	
 	
-	protected static final Logger logger = LoggerFactory.getLogger(AbstractStreamer.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractStreamer.class);
 
 	
 	private BlockingQueue<T> queue;
