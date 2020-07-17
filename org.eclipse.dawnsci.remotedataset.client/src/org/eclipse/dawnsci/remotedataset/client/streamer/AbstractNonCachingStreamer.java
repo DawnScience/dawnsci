@@ -61,7 +61,12 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 		HttpEntity ent = getConnection(url);
 		if (ent != null) {
 			inpStream = ent.getContent();
-			contentType = ent.getContentType().getValue();
+			try {
+				contentType = ent.getContentType().getValue();
+			} catch (Exception e) {
+				logger.error("Exception in getConnection({}).getContentType().getValue()", url, e);
+				contentType = null;
+			}
 		}
 
 		if (inpStream == null || contentType == null) {
