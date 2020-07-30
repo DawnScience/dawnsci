@@ -42,7 +42,6 @@
 					<excludes>
 						<!-- Requires external server to be running -->
 						<exclude>DynamicDatasetPluginTest</exclude>
-						<exclude>MJPGTest</exclude>
 						<exclude>RemoteDatasetSliceTest</exclude>
 						<exclude>RemoteDatasetTest</exclude>
 						<exclude>SliceClientTest</exclude>
