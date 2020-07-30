@@ -269,6 +269,7 @@ class RemoteDataset extends LazyWriteableDataset implements IDatasetConnector {
 
         HttpClient httpClient = new HttpClient();
         httpClient.setExecutor(exec);
+        httpClient.start();
         this.client = new WebSocketClient(httpClient);
         client.start();
        

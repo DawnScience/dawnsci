@@ -34,24 +34,6 @@
 					</dependency-resolution>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<excludes>
-						<!-- Requires external server to be running -->
-						<exclude>DynamicDatasetPluginTest</exclude>
-						<exclude>RemoteDatasetSliceTest</exclude>
-						<exclude>RemoteDatasetTest</exclude>
-						<exclude>SliceClientTest</exclude>
-						<!-- not run in ant -->
-						<exclude>EventClientTest</exclude>
-						<exclude>FileMonitoringTest</exclude>
-						<!-- file read in package -->
-					</excludes>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>

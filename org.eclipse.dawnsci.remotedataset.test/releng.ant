@@ -41,7 +41,12 @@
 				<path refid="tp.swt.path" />  <!-- ensure that correct platform appears first in classpath -->
 				<path refid="tp.path" />  <!-- target platform -->
 			</classpath>
-			<test name="org.eclipse.dawnsci.remotedataset.test.server.Suite" todir="@{report.dir}"/>
+			<batchtest todir="@{report.dir}">
+				<fileset dir="${plugin.basedir}/src">
+					<include name="**/*Test.java" />
+					<exclude name="**/*PluginTest.java" />
+				</fileset>
+			</batchtest>
 		</junit-call>
 	</target>
 
