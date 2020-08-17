@@ -25,6 +25,7 @@
 		<module>org.eclipse.dawnsci.hdf5.model</module>
 		<module>org.eclipse.dawnsci.json</module>
 		<module>org.eclipse.dawnsci.nexus</module>
+		<module>org.eclipse.dawnsci.nexus.scan</module>
 		<module>org.eclipse.dawnsci.nexus.template</module>
 		<module>org.eclipse.dawnsci.nexus.template.feature</module>
 		<module>org.eclipse.dawnsci.nexus.template.test</module>
