@@ -14,12 +14,23 @@ package org.eclipse.dawnsci.remotedataset.client.streamer;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.eclipse.dawnsci.remotedataset.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,22 +54,61 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	 * @return
 	 * @throws Exception
 	 */
-	protected URLConnection init(URL url, long sleepTime) throws Exception {
+	protected void init(URL url, long sleepTime) throws Exception {
+		String contentType = "";
+		InputStream inpStream = null;
 
-		URLConnection  conn = url.openConnection();
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        conn.setUseCaches(false);
+		HttpEntity ent = getConnection(url);
+		if (ent != null) {
+			inpStream = ent.getContent();
+			contentType = ent.getContentType().getValue();
+		}
 
-        String contentType = conn.getContentType();
+		if (inpStream == null || contentType == null) {
+			String noStream = inpStream == null ? "No stream" : "";
+			String noContent = contentType == null ? "Content type is empty" : "";
+			throw new Exception("Problem connecting to " + url.toString() + " : " + noStream + " " + noContent);
+		}
+
         if (!contentType.startsWith(Constants.MCONTENT_TYPE)) throw new Exception("getImages() may only be used with "+Constants.MCONTENT_TYPE+", not "+contentType);
 
         this.delimiter  = contentType.split("boundary=")[1];
 		this.queue      = new LinkedBlockingQueue<byte[]>(1);
-		this.in         = new BufferedInputStream(conn.getInputStream());
+		this.in         = new BufferedInputStream(inpStream);
 		this.sleepTime  = sleepTime;
+	}
 
-        return conn;
+	/**
+	 * Connect to URL using using Apache {@link HttpClient}.
+	 * Basic authentication is used if username and password information are present in the URL (expected format is : 
+	 * {@code http://<username>:<password>@<ip address>}).
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 */
+	private HttpEntity getConnection(URL url) throws IOException {
+		logger.info("Trying to connect to {}", url.toString());
+		if (url.getUserInfo() != null) {
+			logger.info("Setting username and password : {}", url.getUserInfo());
+
+			// Get username and password from the url
+			String[] userPasswd = url.getUserInfo().split(":");
+
+			// Setup credentials for authenticating connection
+			CredentialsProvider credsProvider = new BasicCredentialsProvider();
+			credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userPasswd[0], userPasswd[1]));
+		}
+
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpResponse response = client.execute(new HttpGet(url.toString()));
+		StatusLine status = response.getStatusLine();
+		if (status.getStatusCode() != HttpStatus.SC_OK) {
+			logger.warn("Possible problem with connection - {} (code = {})", status.getReasonPhrase(),
+					status.getStatusCode());
+		} else {
+			logger.info("Connected ok");
+		}
+		return response.getEntity();
 	}
 	
 	/**
