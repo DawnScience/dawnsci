@@ -73,6 +73,10 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
         if (!contentType.startsWith(Constants.MCONTENT_TYPE)) throw new Exception("getImages() may only be used with "+Constants.MCONTENT_TYPE+", not "+contentType);
 
         this.delimiter  = contentType.split("boundary=")[1];
+        // Delimiter in the stream should start with -- but delimiter in content type also sometimes includes it.
+        if (!delimiter.startsWith("--")) {
+        	delimiter = "--"+delimiter;
+        }
 		this.queue      = new LinkedBlockingQueue<byte[]>(1);
 		this.in         = new BufferedInputStream(inpStream);
 		this.sleepTime  = sleepTime;
@@ -132,7 +136,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 				if (buf.length()>0 && buf.charAt(buf.length()-1)  == '\n') { // Line found
 					
 					final String line = buf.toString().trim();
-					if (line.equals("--"+delimiter)) { // We found a new image
+					if (line.startsWith(delimiter)) { // We found a new image
 						foundImage = true;
 					}
 					if (foundImage && line.startsWith("Content-Length: ")) {

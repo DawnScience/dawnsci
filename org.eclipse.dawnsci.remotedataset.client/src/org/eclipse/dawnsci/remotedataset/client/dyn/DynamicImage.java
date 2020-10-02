@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.dawnsci.plotting.api.image.IPlotImageService;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
@@ -33,6 +34,8 @@ import org.eclipse.january.dataset.IDatasetChangeChecker;
 import org.eclipse.january.dataset.ILazyDataset;
 import org.eclipse.january.dataset.RGBDataset;
 import org.eclipse.january.dataset.ShortDataset;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used for streaming an image into the plotting system.
@@ -44,6 +47,8 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
  	private boolean dynamicShape=true;
 	private int[] transShape;
 	private int[] maxShape;
+	private AtomicInteger imageCount = new AtomicInteger(0);
+	private int numImagesForGoodConnection = 5;
 
 	private Dataset dataset;
 
@@ -75,6 +80,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 	public void start() throws Exception {
 		start(-1);
 	}
+
 	/**
 	 * Starts notifying the IDataListener's with the current 
 	 * thread, blocking until there are no more images or if
@@ -84,9 +90,8 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 	 */
 	public void start(int maxImages) throws Exception {
 
-		int count = 0;
+		imageCount.set(0);
 		while(!client.isFinished()) {
-
 			final BufferedImage image = client.take();
 			if (image==null) break;
 
@@ -101,8 +106,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 
 			delegate.fire(new DataEvent(im.getName(), im.getShape()));
 
-			++count;
-			if (count>maxImages && maxImages>-1) return;
+			if (imageCount.incrementAndGet()>maxImages && maxImages>-1) return;
 			
 			if (client.getSleep()>-1) {
 				delay(client.getSleep());
@@ -208,27 +212,33 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		
 		// Might be a bit overkill for this task
         final BlockingQueue<Exception> queue = new LinkedBlockingDeque<Exception>(1);
-		this.imageMonitor = new Thread(new Runnable() {
-			public void run() {
-				try {
-					start(); // Just keep going until we are interrupted...
-				} catch (Exception e) {
-					queue.add(e);
-				}
+		this.imageMonitor = new Thread(() -> {
+			try {
+				start(); // Just keep going until we are interrupted...
+			} catch (Exception e) {
+				queue.add(e);
 			}
 		});
+		
+		// reset counter before starting the thread, to avoid possible race condition while waiting for connection to be made
+		imageCount.set(0); 
+		
 		imageMonitor.setName("Monitor "+ dataset.getName());
 		imageMonitor.setDaemon(true);
 		imageMonitor.setPriority(Thread.MIN_PRIORITY); // TODO Is that right?
 		imageMonitor.start();
-		
-		Exception e = null;
+
+		// Wait for successful connection to be made
 		try {
-			e = queue.poll(time, unit);
-		} catch (InterruptedException e1) {
-			e = e1;
+			long timeCount = 0;
+			long maxTime = TimeUnit.MICROSECONDS.convert(time, unit);
+			while(queue.isEmpty() && imageCount.get() < numImagesForGoodConnection && timeCount < maxTime) {
+				Thread.sleep(100);
+				timeCount += 100;
+			}
+		} catch (InterruptedException e) {
+			throw new DatasetException(e);
 		}
-		if (e!=null) throw new DatasetException(e);
 		
 		return imageMonitor.getName(); // So that you can know if the runner is going.
 	}
