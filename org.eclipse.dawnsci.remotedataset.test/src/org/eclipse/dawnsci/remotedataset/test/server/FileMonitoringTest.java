@@ -20,6 +20,7 @@ import org.eclipse.dawnsci.remotedataset.client.RemoteDatasetServiceImpl;
 import org.eclipse.dawnsci.remotedataset.server.DataServerMode;
 import org.eclipse.dawnsci.remotedataset.server.DiagnosticInfo;
 import org.eclipse.january.dataset.IDatasetConnector;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -32,6 +33,7 @@ import org.junit.Test;
  * 
  *
  */
+@Ignore("Test is too unreliable when running on Jenkins with multiple executors on same machine")
 public class FileMonitoringTest extends DataServerTest {
 
 	@Test
