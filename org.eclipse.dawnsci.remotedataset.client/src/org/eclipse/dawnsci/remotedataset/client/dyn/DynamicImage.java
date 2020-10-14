@@ -231,7 +231,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		// Wait for successful connection to be made
 		try {
 			long timeCount = 0;
-			long maxTime = TimeUnit.MICROSECONDS.convert(time, unit);
+			long maxTime = TimeUnit.MILLISECONDS.convert(time, unit);
 			while(queue.isEmpty() && imageCount.get() < numImagesForGoodConnection && timeCount < maxTime) {
 				Thread.sleep(100);
 				timeCount += 100;
