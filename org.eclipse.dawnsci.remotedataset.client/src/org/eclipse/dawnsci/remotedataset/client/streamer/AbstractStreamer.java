@@ -46,6 +46,7 @@ abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
         conn.setUseCaches(false);
 
         String contentType = conn.getContentType();
+        if (contentType == null) throw new Exception("Check URL is valid as getContentType() returned null for "+conn.getURL().toString());
         if (!contentType.startsWith(Constants.MCONTENT_TYPE)) throw new Exception("getImages() may only be used with "+Constants.MCONTENT_TYPE+", not "+contentType);
 
         this.delimiter  = contentType.split("boundary=")[1];
