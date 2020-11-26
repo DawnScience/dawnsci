@@ -50,7 +50,7 @@ public class RemoteDataTest extends DataServerTest {
 	@Test
 	public void testEmptyTree() throws Exception {
 
-		final IRemoteData data = service.createRemoteData("localhost", 8080);
+		final IRemoteData data = service.createRemoteData("localhost", port);
 		
 		String path = "./testfiles/38323_processed.nxs"; // The mock loader gives a non-null empty tree for this file.
 		data.setPath(path);
