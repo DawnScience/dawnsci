@@ -62,5 +62,11 @@
 				<module>org.eclipse.dawnsci.xdi.test</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>nexus-template</id>
+			<modules>
+				<module>org.eclipse.dawnsci.nexus.template.product</module>
+			</modules>
+		</profile>
 	</profiles>
 </project>
