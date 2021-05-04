@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.january;bundle-version="2.3.0",
  org.eclipse.jetty.client;bundle-version="9.2.13",
  org.eclipse.dawnsci.analysis.tree,
  org.apache.httpcomponents.httpcore,
- org.apache.httpcomponents.httpclient
-Import-Package: org.slf4j;version="1.7.2",
- uk.ac.diamond.scisoft.analysis.io
+ org.apache.httpcomponents.httpclient,
+ uk.ac.diamond.scisoft.analysis
+Import-Package: org.slf4j;version="1.7.2"
 Automatic-Module-Name: org.eclipse.dawnsci.remotedataset.client
