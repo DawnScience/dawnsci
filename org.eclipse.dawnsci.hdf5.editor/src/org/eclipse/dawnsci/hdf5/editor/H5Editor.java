@@ -237,8 +237,8 @@ public class H5Editor extends EditorPart implements IReusableEditor, IH5Editor {
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					if (page != null) {
 						try {
-							if (page.findView("org.dawb.passerelle.views.ValueView")==null) {
-								page.showView("org.dawb.passerelle.views.ValueView");
+							if (page.findView("org.dawb.common.ui.views.ValueView")==null) {
+								page.showView("org.dawb.common.ui.views.ValueView");
 							}
 						} catch (PartInitException e) {
 							// do nothing
