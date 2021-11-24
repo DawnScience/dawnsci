@@ -14,8 +14,6 @@ package org.eclipse.dawnsci.remotedataset.server;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.dawnsci.remotedataset.server.event.EventServlet;
-import org.eclipse.dawnsci.remotedataset.server.event.FileMonitorSocket;
 import org.eclipse.dawnsci.remotedataset.server.info.InfoServlet;
 import org.eclipse.dawnsci.remotedataset.server.info.ShapesServlet;
 import org.eclipse.dawnsci.remotedataset.server.info.TreeServlet;
@@ -108,31 +106,9 @@ public class DataServer extends PortServer {
 		
 		ServletHolder holderShapes = new ServletHolder("shapes", ShapesServlet.class);
 		context.addServlet(holderShapes, "/shapes/*");
-
-     
-		// Events json objects to notify of problems.
-		ServletHolder holderEvent = new ServletHolder("event", EventServlet.class);
-		context.addServlet(holderEvent, "/event/*");
 		
 	    server.start();
 	    if (block) server.join();
 
-	}
-	
-	public void setMode(DataServerMode mode) {
-		
-		// TODO Other diagnostic things...
-		if (mode.equals(DataServerMode.DIAGNOSTIC)) {
-			FileMonitorSocket.setRecordThreads(true);
-		} else {
-			FileMonitorSocket.setRecordThreads(false);
-		}
-	}
-
-	public DiagnosticInfo getDiagnosticInfo() {
-		DiagnosticInfo ret = new DiagnosticInfo();
-		ret.merge(FileMonitorSocket.getDiagnosticInfo());
-		// TODO Other info?
-		return ret;
 	}
 }

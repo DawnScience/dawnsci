@@ -85,10 +85,6 @@ public class URLBuilder {
 		return new URL(getURL("http", "/slice/", true));
 	}
 	
-	public String getEventURL() throws Exception {
-		return getURL("ws", "/event/", false);
-	}
-	
 	public String getInfoURL() throws Exception {
 		return getURL("http", "/info/", false);
 	}

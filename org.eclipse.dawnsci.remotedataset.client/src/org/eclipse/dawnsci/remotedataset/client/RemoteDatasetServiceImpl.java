@@ -30,10 +30,6 @@ public class RemoteDatasetServiceImpl implements IRemoteDatasetService {
 	static {
 		System.out.println("Starting remote dataset service.");
 	}
-	@Override
-	public IDatasetConnector createRemoteDataset(String serverName, int port) {
-    	return new RemoteDataset(serverName, port, getExecutor());
-	}
 	
 	@Override
 	public IDatasetConnector createMJPGDataset(URL url, long sleepTime, int cacheSize) throws Exception {
@@ -69,11 +65,6 @@ public class RemoteDatasetServiceImpl implements IRemoteDatasetService {
 	public Executor getExecutor() {
 		if (executor==null) executor = Executors.newCachedThreadPool();
 		return executor;
-	}
-
-	@Override
-	public IRemoteData createRemoteData(String serverName, int port) {
-		return new RemoteData(this, serverName, port, getExecutor());
 	}
 	
 	public IRemoteDataHolder createRemoteDataHolder(String path, String serverName, int port, boolean failForSymbolic) {
