@@ -88,13 +88,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jetty.continuation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jetty.security.jaspi"
          download-size="0"
          install-size="0"
@@ -172,13 +165,6 @@
          unpack="false"/>
 
    <plugin
-         id="javax.websocket"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.dawnsci.json"
          download-size="0"
          install-size="0"
@@ -187,6 +173,13 @@
 
    <plugin
          id="org.eclipse.jetty.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.alpn.client"
          download-size="0"
          install-size="0"
          version="0.0.0"
