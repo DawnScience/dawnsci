@@ -11,6 +11,7 @@ import org.eclipse.dawnsci.analysis.api.tree.Tree;
 import org.eclipse.dawnsci.analysis.api.tree.TreeFile;
 import org.eclipse.dawnsci.analysis.tree.TreeFactory;
 import org.eclipse.dawnsci.remotedataset.RemoteDatasetKeys;
+import org.eclipse.january.dataset.DTypeUtils;
 import org.eclipse.january.dataset.LazyDynamicDataset;
 
 public class MapToTreeUtils {
@@ -87,9 +88,9 @@ public class MapToTreeUtils {
 				b.setDataset(nodeName);
 				ShapeSetRemoteLoader loader = new ShapeSetRemoteLoader(b, shape);
 				
-				LazyDynamicDataset lazy = new LazyDynamicDataset(name, dtype.intValue(),
-						elements.intValue(), shape,
-						Arrays.stream(maxShape).mapToInt(l -> (int)l).toArray(), loader);
+				LazyDynamicDataset lazy = new LazyDynamicDataset(loader, name, elements.intValue(),
+						DTypeUtils.getInterface(dtype.intValue()), shape,
+						Arrays.stream(maxShape).mapToInt(l -> (int) l).toArray());
 				
 				dataNode.setDataset(lazy);
 				dataNode.setChunkShape(chunkShape);

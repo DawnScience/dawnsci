@@ -103,7 +103,7 @@ public class LoaderServiceMock implements ILoaderService {
 				
 				if (files==null || files.size()<2) continue;
 	 			MockImageStackLoader loader = new MockImageStackLoader(files, ret, monitor);
-				LazyDataset lazyDataset = new LazyDataset(name, loader.getDType(), loader.getShape(), loader);
+				LazyDataset lazyDataset = new LazyDataset(loader, name, loader.getInterface(), loader.getShape());
 				ret.addDataset(name, lazyDataset);
 			}
 		}

@@ -19,11 +19,11 @@ import org.eclipse.dawnsci.analysis.api.io.IFileLoader;
 import org.eclipse.dawnsci.analysis.api.io.ILoaderService;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
 import org.eclipse.january.IMonitor;
-import org.eclipse.january.dataset.DTypeUtils;
 import org.eclipse.january.dataset.Dataset;
 import org.eclipse.january.dataset.DatasetFactory;
 import org.eclipse.january.dataset.DatasetUtils;
 import org.eclipse.january.dataset.IDataset;
+import org.eclipse.january.dataset.InterfaceUtils;
 import org.eclipse.january.dataset.ShapeUtils;
 import org.eclipse.january.dataset.SliceND;
 import org.eclipse.january.dataset.SliceNDIterator;
@@ -49,13 +49,13 @@ public class MockImageStackLoader implements ILazyLoader {
 	private long[] mShape; // max total shape
 	private int[] iShape; // image shape
 	private int[] shape;
-	private int dtype;
+	private Class<? extends Dataset> clazz;
 	private File parent = null;
 	private Class<? extends IFileLoader> loaderClass;
 	private boolean onlyOne;
 	
-	public int getDType() {
-		return dtype;
+	public Class<? extends Dataset> getInterface() {
+		return clazz;
 	}
 
 	public MockImageStackLoader(List<String> imageFilenames, ILoaderService service, IMonitor mon) throws Exception {
@@ -98,7 +98,7 @@ public class MockImageStackLoader implements ILazyLoader {
 			loaderClass = dh.getLoaderClass();
 		}
 		onlyOne = imageFilenames.getSize() == 1;
-		dtype = DTypeUtils.getDType(dataSetFromFile);
+		clazz = InterfaceUtils.getInterface(dataSetFromFile);
 		iShape = dataSetFromFile.getShape();
 		shape = Arrays.copyOf(fShape, fRank + iShape.length);
 		for (int i = 0; i < iShape.length; i++) {
@@ -151,7 +151,7 @@ public class MockImageStackLoader implements ILazyLoader {
 		}
 
 		IDataset dataset = data.getDataset(0);
-		IMetadata metadata = dataset.getMetadata();
+		IMetadata metadata = dataset.getFirstMetadata(IMetadata.class);
 		if (metadata == null)
 			metadata = new Metadata();
 		((Metadata)metadata).setFilePath(filename);
@@ -185,7 +185,7 @@ public class MockImageStackLoader implements ILazyLoader {
 		int[] newShape = slice.getShape();
 
 		if (ShapeUtils.calcSize(newShape) == 0)
-			return DatasetFactory.zeros(newShape, dtype);
+			return DatasetFactory.zeros(clazz, newShape);
 
 		int iRank = iShape.length;
 		int nRank = newShape.length;
@@ -195,7 +195,7 @@ public class MockImageStackLoader implements ILazyLoader {
 			missing[i] = start + i;
 		}
 		SliceNDIterator it = new SliceNDIterator(slice, missing);
-		Dataset result = onlyOne || ShapeUtils.calcSize(it.getShape()) == 1 ? null : DatasetFactory.zeros(newShape, dtype);
+		Dataset result = onlyOne || ShapeUtils.calcSize(it.getShape()) == 1 ? null : DatasetFactory.zeros(clazz, newShape);
 
 		int[] pos = it.getUsedPos();
 		SliceND iSlice = it.getOmittedSlice();
