@@ -47,6 +47,7 @@ import org.eclipse.january.dataset.IntegerDataset;
 import org.eclipse.january.dataset.RGBDataset;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -80,9 +81,6 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 	public PlotImageServiceMock() {
 		
 	}
-	
-	private static float minimumThreshold = 0.98f;
-	private static int colourMapChoice    = 1;
     private static ImageRegistry imageRegistry;
     
     @Override
@@ -99,7 +97,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 		    
 		} catch (Throwable ne) {
 			
-			if (imageRegistry == null) imageRegistry = new ImageRegistry(Display.getDefault());
+			if (imageRegistry == null) imageRegistry = JFaceResources.getImageRegistry();
 			final String extension = FileUtils.getFileExtension(f);
 			Image image = imageRegistry.get(extension);
 			if (image != null) return image;
@@ -117,10 +115,11 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 		final Image image = PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(f.getAbsolutePath()).createImage();
 		final Image blank = new Image(Display.getDefault(), width, height);
 		GC gc = new GC(blank);
-        gc.drawImage(image, (width/2)-image.getImageData().width/2, height/2-image.getImageData().height/2);
-        gc.dispose();
-        
-        return blank;
+		gc.drawImage(image, (width/2)-image.getImageData().width/2, height/2-image.getImageData().height/2);
+		gc.dispose();
+		image.dispose();
+
+		return blank;
 	}
 	
 	private Dataset getThumbnail(final File f, final int width, final int height) throws Throwable {
@@ -354,7 +353,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 
 		final String ext = FileUtils.getFileExtension(file);
 		if (imageRegistry == null)
-			imageRegistry = new ImageRegistry();
+			imageRegistry = JFaceResources.getImageRegistry();
 
 		Image returnImage = imageRegistry.get(ext);
 		if (returnImage != null)
