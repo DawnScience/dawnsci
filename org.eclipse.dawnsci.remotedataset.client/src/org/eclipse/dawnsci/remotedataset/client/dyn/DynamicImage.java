@@ -32,10 +32,9 @@ import org.eclipse.january.dataset.IDataListener;
 import org.eclipse.january.dataset.IDataset;
 import org.eclipse.january.dataset.IDatasetChangeChecker;
 import org.eclipse.january.dataset.ILazyDataset;
+import org.eclipse.january.dataset.RGBByteDataset;
 import org.eclipse.january.dataset.RGBDataset;
 import org.eclipse.january.dataset.ShortDataset;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Used for streaming an image into the plotting system.
@@ -66,7 +65,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 	 */
 	public DynamicImage(boolean isRGB, SliceClient<BufferedImage> client, int... shape) {
 		greyScale = !isRGB;
-		dataset = greyScale ? DatasetFactory.zeros(ShortDataset.class, shape) : DatasetFactory.zeros(RGBDataset.class, shape);
+		dataset = greyScale ? DatasetFactory.zeros(ShortDataset.class, shape) : DatasetFactory.zeros(RGBByteDataset.class, shape);
 		delegate = new DataListenerDelegate();
 		this.client = client;
 	}
@@ -100,7 +99,13 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 				throw new NullPointerException("Plot image service not set");
 			}
 			Dataset im = DatasetUtils.convertToDataset(plotImageService.createDataset(image));
-			if (greyScale && im instanceof RGBDataset) im = ((RGBDataset)im).getRedView();
+			if (greyScale) {
+				if (im instanceof RGBByteDataset) {
+					im = ((RGBByteDataset) im).getRedView();
+				} else if (im instanceof RGBDataset) {
+					im = ((RGBDataset) im).getRedView();
+				}
+			}
 
 			setDataset(im);
 
@@ -120,7 +125,8 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 
 	@Override
 	public void setDataset(IDataset sdata) {
-		Dataset data = greyScale ? DatasetUtils.cast(ShortDataset.class, sdata) : DatasetUtils.cast(RGBDataset.class, sdata);
+		Class<? extends Dataset> clazz = greyScale ? ShortDataset.class : RGBByteDataset.class;
+		Dataset data = DatasetUtils.cast(clazz, sdata);
 		Serializable buffer = data.getBuffer();
 		
 		int[] shape = sdata.getShape();
