@@ -11,13 +11,20 @@
  *******************************************************************************/
 package org.eclipse.dawnsci.remotedataset.client;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import org.eclipse.dawnsci.remotedataset.client.slice.SliceClient;
 import org.eclipse.january.IMonitor;
@@ -25,6 +32,8 @@ import org.eclipse.january.dataset.IDataset;
 import org.eclipse.january.dataset.SliceND;
 import org.eclipse.january.io.ILazyDynamicLoader;
 import org.eclipse.january.io.ILazyLoader;
+
+import uk.ac.diamond.scisoft.analysis.io.AWTImageUtils;
 
 public class RemoteLoader implements ILazyLoader,ILazyDynamicLoader {
 
@@ -93,4 +102,33 @@ public class RemoteLoader implements ILazyLoader,ILazyDynamicLoader {
 		return ret;
 	}
 
+	public static BufferedImage readFromImageStream(ImageInputStream iis) throws Exception {
+		Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+		try {
+			while (readers.hasNext()) {
+				ImageReader rdr = null;
+				try {
+					rdr = readers.next();
+					try {
+						rdr.setInput(iis, true, true);
+						ImageReadParam its = AWTImageUtils.getRGBParam(rdr, 0);
+						if (its == null) { // JPEG exception
+							return rdr.read(0);
+						}
+						try {
+							return AWTImageUtils.makeBufferedImage(rdr.readRaster(0, its));
+						} catch (UnsupportedOperationException e) {
+							return rdr.read(0, its);
+						}
+					} catch (Exception e) {
+					}
+				} finally {
+					rdr.dispose();
+				}
+			}
+		} catch (Exception e) {
+			// do nothing
+		}
+		return null;
+	}
 }
