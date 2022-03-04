@@ -14,8 +14,13 @@ package org.eclipse.dawnsci.remotedataset.client.streamer;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+
+import uk.ac.diamond.scisoft.analysis.io.AWTImageUtils;
 
 class MJPGStreamer extends AbstractNonCachingStreamer<BufferedImage> {
 
@@ -38,6 +43,33 @@ class MJPGStreamer extends AbstractNonCachingStreamer<BufferedImage> {
 
 	@Override
 	protected BufferedImage getFromStream(ByteArrayInputStream bais) throws Exception {
-		return ImageIO.read(bais);
+		Iterator<ImageReader> readers = ImageIO.getImageReaders(bais);
+		try {
+			while (readers.hasNext()) {
+				ImageReader rdr = null;
+				try {
+					rdr = readers.next();
+					ImageReadParam its = AWTImageUtils.getRGBParam(rdr, 0);
+					try {
+						rdr.setInput(bais, true, true);
+						if (its == null) { // JPEG exception
+							return rdr.read(0);
+						}
+						try {
+							return AWTImageUtils.makeBufferedImage(rdr.readRaster(0, its));
+						} catch (UnsupportedOperationException e) {
+							return rdr.read(0, its);
+						}
+					} catch (Exception e) {
+					}
+				} finally {
+					rdr.dispose();
+				}
+			}
+		} finally {
+			bais.close();
+		}
+
+		return null;
 	}
 }
