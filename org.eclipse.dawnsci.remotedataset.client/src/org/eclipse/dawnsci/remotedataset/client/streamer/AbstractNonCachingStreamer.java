@@ -230,7 +230,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	 */
 	public T take() throws InterruptedException {
 		byte[] latestBytes = queue.take(); // Might get interrupted
-		ByteArrayInputStream bais = new ByteArrayInputStream(latestBytes);	
+		ByteArrayInputStream bais = new ByteArrayInputStream(latestBytes);
 		T bi = null;
 		try {
 			bi = getFromStream(bais);

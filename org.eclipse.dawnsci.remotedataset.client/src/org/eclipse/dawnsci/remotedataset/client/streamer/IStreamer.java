@@ -49,5 +49,4 @@ public interface IStreamer<T> {
 	 * @param b
 	 */
 	void setFinished(boolean b);
-
 }

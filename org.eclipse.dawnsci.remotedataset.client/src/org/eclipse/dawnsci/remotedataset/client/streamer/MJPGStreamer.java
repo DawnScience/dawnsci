@@ -16,6 +16,9 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+
+import org.eclipse.dawnsci.remotedataset.client.RemoteLoader;
 
 class MJPGStreamer extends AbstractNonCachingStreamer<BufferedImage> {
 
@@ -38,6 +41,16 @@ class MJPGStreamer extends AbstractNonCachingStreamer<BufferedImage> {
 
 	@Override
 	protected BufferedImage getFromStream(ByteArrayInputStream bais) throws Exception {
-		return ImageIO.read(bais);
+		try {
+			ImageInputStream iis = ImageIO.createImageInputStream(bais);
+			
+			BufferedImage bi = RemoteLoader.readFromImageStream(iis);
+			if (bi == null) {
+				return ImageIO.read(iis);
+			}
+			return bi;
+		} finally {
+			bais.close();
+		}
 	}
 }
