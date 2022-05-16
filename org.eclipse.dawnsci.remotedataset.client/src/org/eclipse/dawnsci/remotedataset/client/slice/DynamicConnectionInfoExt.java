@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.dawnsci.remotedataset.client.slice;
 
-import java.awt.image.BufferedImage;
-
 import org.eclipse.january.metadata.DynamicConnectionInfo;
 
 /**
@@ -28,9 +26,9 @@ public class DynamicConnectionInfoExt extends DynamicConnectionInfo {
 	 */
 	private static final long serialVersionUID = 8129875989888252784L;
 	
-	private transient SliceClient<BufferedImage> client;
+	private transient SliceClient<?> client;
 
-	public DynamicConnectionInfoExt(SliceClient<BufferedImage> client) {
+	public DynamicConnectionInfoExt(SliceClient<?> client) {
 		this.client = client;
 	}
 	public boolean isConnected() {
