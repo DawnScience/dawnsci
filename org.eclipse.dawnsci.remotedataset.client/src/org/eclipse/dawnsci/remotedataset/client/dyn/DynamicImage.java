@@ -125,8 +125,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 
 	@Override
 	public void setDataset(IDataset sdata) {
-		Class<? extends Dataset> clazz = greyScale ? ShortDataset.class : RGBByteDataset.class;
-		Dataset data = DatasetUtils.cast(clazz, sdata);
+		Dataset data = greyScale ? DatasetUtils.makeUnsigned(sdata) : DatasetUtils.cast(RGBByteDataset.class, sdata);
 		Serializable buffer = data.getBuffer();
 		
 		int[] shape = sdata.getShape();
@@ -152,7 +151,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		dynamicShape  = isDyn;
 		if (dynamicShape && transShape!=null) {
 			dataset.overrideInternal(null, transShape);
-		    transShape = null;
+			transShape = null;
 		}
 	}
 
@@ -217,7 +216,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		if (imageMonitor!=null) throw new DatasetException("Cannot reconnect to already running dataset!");
 		
 		// Might be a bit overkill for this task
-        final BlockingQueue<Exception> queue = new LinkedBlockingDeque<Exception>(1);
+		final BlockingQueue<Exception> queue = new LinkedBlockingDeque<Exception>(1);
 		this.imageMonitor = new Thread(() -> {
 			try {
 				start(); // Just keep going until we are interrupted...

@@ -11,14 +11,18 @@
  *******************************************************************************/
 package org.eclipse.dawnsci.remotedataset.client.slice;
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 
 import org.eclipse.dawnsci.remotedataset.Format;
 import org.eclipse.dawnsci.remotedataset.ServiceHolder;
+import org.eclipse.dawnsci.remotedataset.client.RemoteLoader;
 import org.eclipse.dawnsci.remotedataset.client.URLBuilder;
 import org.eclipse.dawnsci.remotedataset.client.streamer.IStreamer;
 import org.eclipse.dawnsci.remotedataset.client.streamer.StreamerFactory;
@@ -96,14 +100,14 @@ public class SliceClient<T> {
 	// Private data, not getter/setter
 	private IStreamer<T> streamer;
 	
-    private URLBuilder urlBuilder;
+	private URLBuilder urlBuilder;
 
-    /**
-     * Used for DataServer connections.
-     * 
-     * @param serverName
-     * @param port
-     */
+	/**
+	 * Used for DataServer connections.
+	 * 
+	 * @param serverName
+	 * @param port
+	 */
 	public SliceClient(String serverName, int port) {
 		this.urlBuilder = new URLBuilder(serverName, port);
 	}
@@ -126,6 +130,7 @@ public class SliceClient<T> {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public T take() throws Exception {
 		
 		Format format = urlBuilder.getFormat();
@@ -138,8 +143,8 @@ public class SliceClient<T> {
 		if (isFinished()) throw new Exception("Client has finished reading images!");
 		if (streamer==null) {
 			this.isFinished = false;
-	        this.streamer = (IStreamer<T>)StreamerFactory.getStreamer(urlBuilder.getSliceURL(), getSleep(), imageCache, format);
-	        streamer.start(); // Runs thread to add to queue
+			this.streamer = (IStreamer<T>)StreamerFactory.getStreamer(urlBuilder.getSliceURL(), getSleep(), imageCache, format);
+			streamer.start(); // Runs thread to add to queue
 		}
 		
 		T image = streamer.take();
@@ -147,7 +152,7 @@ public class SliceClient<T> {
 			isFinished = true;
 			streamer = null; // A null image means that the connection is down.
 		}
-        return image;
+		return image;
 	}
 
 	public long getDroppedImageCount() {
@@ -176,10 +181,12 @@ public class SliceClient<T> {
 		case JPG:
 		case PNG:
 			return getImage();
+		default:
+			throw new Exception("Format '"+format+"' cannot be used with get()");
 		}
-		throw new Exception("Format '"+format+"' cannot be used with get()");
 	}
 	
+	@SuppressWarnings("unchecked")
 	private T getImage() throws Exception {
 		
 		isFinished = false;
@@ -195,13 +202,24 @@ public class SliceClient<T> {
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 
-			return (T)ImageIO.read(url.openStream());
+			InputStream is = url.openStream();
+			try {
+				ImageInputStream iis = ImageIO.createImageInputStream(is);
+				BufferedImage bi = RemoteLoader.readFromImageStream(iis);
+				if (bi == null) {
+					bi = ImageIO.read(iis);
+				}
+				return (T) bi;
+			} finally {
+				is.close();
+			}
 		} finally {
 			isFinished = true;
 		}
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	private T getData() throws Exception {
 		isFinished = false;
 		try {
@@ -321,7 +339,7 @@ public class SliceClient<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SliceClient other = (SliceClient) obj;
+		SliceClient<?> other = (SliceClient<?>) obj;
 		if (isFinished != other.isFinished)
 			return false;
 		if (urlBuilder == null) {
