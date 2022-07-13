@@ -202,16 +202,12 @@ public class SliceClient<T> {
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 
-			InputStream is = url.openStream();
-			try {
-				ImageInputStream iis = ImageIO.createImageInputStream(is);
+			try (InputStream is = url.openStream(); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
 				BufferedImage bi = RemoteLoader.readFromImageStream(iis);
 				if (bi == null) {
 					bi = ImageIO.read(iis);
 				}
 				return (T) bi;
-			} finally {
-				is.close();
 			}
 		} finally {
 			isFinished = true;
