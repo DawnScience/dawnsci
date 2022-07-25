@@ -126,6 +126,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 		return DatasetFactory.zeros(DoubleDataset.class, height, width);
 	}
 
+	@Override
 	public Dataset getThumbnail(final IDataset ds,  final int w, final int h) {
 
 		if (ds!=null && ds.getRank() == 2) { // 2D datasets only!!!
@@ -209,6 +210,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 			final Display display = shell!=null ? shell.getDisplay() : Display.getDefault();
 			
 			display.syncExec(new Runnable() {
+				@Override
 				public void run() {
 					
 					if (shell!=null) shell.setSize(width+20, height+20);
@@ -294,6 +296,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 				
 		if (system.getPlotComposite()==null) {
 			Display.getDefault().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					final Shell   shell   = new Shell(Display.getDefault(), SWT.RESIZE|SWT.NO_TRIM);
 					ret.setShell(shell);
@@ -322,6 +325,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 		@Override
 		public void dispose() {
 			Display.getDefault().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					if (system!=null) system.dispose();
 					if (shell!=null)  shell.dispose();
@@ -346,6 +350,7 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 		}
 	}
 
+	@Override
 	public Image getIconForFile(final File file) {
 		if (file.isDirectory()) {
 			return getFolderImage(file);
@@ -400,10 +405,12 @@ public class PlotImageServiceMock extends AbstractServiceFactory implements IPlo
 	 * @param size
 	 * @return
 	 */
+	@Override
 	public Image createImage(final BufferedImage image) {
 		return new Image(null,convertToSWT(image) );
 	}
 	
+	@Override
 	public IDataset createDataset(final BufferedImage bufferedImage) {
 		return convertToRGBDataset(bufferedImage);
 	}

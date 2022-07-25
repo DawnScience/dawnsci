@@ -72,11 +72,13 @@ public class InfoServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 371241872556958998L;
 
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	doHandle(req, resp);
     }
     
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	doHandle(req, resp);
     }
     

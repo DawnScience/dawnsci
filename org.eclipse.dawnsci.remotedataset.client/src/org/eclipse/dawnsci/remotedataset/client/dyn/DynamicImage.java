@@ -76,6 +76,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 	 * 
 	 * @throws Exception
 	 */
+	@Override
 	public void start() throws Exception {
 		start(-1);
 	}
@@ -87,6 +88,7 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 	 * 
 	 * @throws Exception
 	 */
+	@Override
 	public void start(int maxImages) throws Exception {
 
 		imageCount.set(0);
@@ -170,11 +172,13 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		// TODO add method to DataConnection
 	}
 
+	@Override
 	public int[] getMaxShape() {
 		if (maxShape==null) return dataset.getShape();
 		return maxShape;
 	}
 
+	@Override
 	public void setMaxShape(int... maxShape) {
 		this.maxShape = maxShape;
 	}
@@ -259,10 +263,12 @@ class DynamicImage implements IDynamicMonitorDatasetHolder {
 		return true;
 	}
 
+	@Override
 	public boolean isWritingExpected() {
 		return client.isWritingExpected();
 	}
 
+	@Override
 	public void setWritingExpected(boolean writingExpected) {
 		client.setWritingExpected(writingExpected);
 	}

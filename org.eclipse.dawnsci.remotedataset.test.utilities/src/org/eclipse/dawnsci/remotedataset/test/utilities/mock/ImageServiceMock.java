@@ -91,6 +91,7 @@ public class ImageServiceMock extends AbstractServiceFactory implements IImageSe
 	/**
 	 * This method is not thread safe
 	 */
+	@Override
 	public Image getImage(ImageServiceBean bean) {
 		final ImageData data = getImageData(bean);
 		return new Image(Display.getCurrent(), data);
@@ -110,6 +111,7 @@ public class ImageServiceMock extends AbstractServiceFactory implements IImageSe
 	 * 
 	 * This method should be thread safe.
 	 */
+	@Override
 	public ImageData getImageData(ImageServiceBean bean) {
 		Dataset oImage    = DatasetUtils.convertToDataset(bean.getImage());
 		Dataset image    = oImage;
@@ -460,6 +462,7 @@ public class ImageServiceMock extends AbstractServiceFactory implements IImageSe
 	 * @param bean
 	 * @return [0] = min [1] = max(=mean*constant) [2] = mean [3] max
 	 */
+	@Override
 	public double[] getFastStatistics(ImageServiceBean bean) {
 		
 		Dataset image    = getImageLoggedData(bean);

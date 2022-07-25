@@ -31,14 +31,17 @@ public class DynamicConnectionInfoExt extends DynamicConnectionInfo {
 	public DynamicConnectionInfoExt(SliceClient<?> client) {
 		this.client = client;
 	}
+	@Override
 	public boolean isConnected() {
 		return !client.isFinished();
 	}
 
+	@Override
 	public long getReceivedCount() {
 		return client.getReceivedImageCount();
 	}
 
+	@Override
 	public long getDroppedCount() {
 		return client.getDroppedImageCount();
 	}

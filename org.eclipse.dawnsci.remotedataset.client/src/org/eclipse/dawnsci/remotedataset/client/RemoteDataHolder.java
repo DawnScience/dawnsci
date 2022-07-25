@@ -137,6 +137,7 @@ public class RemoteDataHolder extends DataHolder implements IRemoteDataHolder {
 		return null;
 	}
 	
+	@Override
 	public void update() {
 		Map<String, int[]> remoteShapes = getRemoteShapes();
 		

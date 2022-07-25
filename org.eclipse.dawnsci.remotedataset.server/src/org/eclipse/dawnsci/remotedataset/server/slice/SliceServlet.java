@@ -40,11 +40,13 @@ public class SliceServlet extends HttpServlet {
 	
 	private static final Object LOCK=new Object();
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	doHandle(req, resp);
     }
     
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	doHandle(req, resp);
     }
     

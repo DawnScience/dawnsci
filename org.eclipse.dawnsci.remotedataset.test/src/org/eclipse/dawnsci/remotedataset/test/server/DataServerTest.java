@@ -123,6 +123,7 @@ public class DataServerTest {
 		ret.deleteOnExit();
 
 		final Thread runner = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				ILazyWriteableDataset writer = null;
 				try (NexusFile file = factory.newNexusFile(ret.getAbsolutePath(), false)) {
@@ -183,7 +184,8 @@ public class DataServerTest {
         }
         
         final Thread runner = new Thread(new Runnable() {
-        	public void run() {
+        	@Override
+			public void run() {
         		
         		int index = 0;
         		while(testIsRunning) {

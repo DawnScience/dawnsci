@@ -123,6 +123,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	/**
 	 * Runs until finished or the stream is closed, continuously parsing the data in the stream to form an image
 	 */
+	@Override
 	public void run() {
 		
 		isFinished = false;
@@ -228,6 +229,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	 * 
 	 * @throws InterruptedException
 	 */
+	@Override
 	public T take() throws InterruptedException {
 		byte[] latestBytes = queue.take(); // Might get interrupted
 		ByteArrayInputStream bais = new ByteArrayInputStream(latestBytes);
@@ -254,6 +256,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	/**
 	 * Gets the dropped image count. Note, this does not apply to this streamer, so will return 0
 	 */
+	@Override
 	public long getDroppedImageCount() {
 		return 0;
 	}
@@ -261,6 +264,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	/**
 	 * Gets the received image count
 	 */
+	@Override
 	public long getReceivedImageCount() {
 		return receivedImages;
 	}
@@ -268,6 +272,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	/**
 	 * Starts the thread running
 	 */
+	@Override
 	public void start() {
 		Thread thread = new Thread(this);
 		thread.setPriority(Thread.MIN_PRIORITY);
@@ -280,6 +285,7 @@ abstract class AbstractNonCachingStreamer<T> implements IStreamer<T>, Runnable {
 	 * Call to tell the streamer to stop adding images to its queue.
 	 * @param b
 	 */
+	@Override
 	public void setFinished(boolean b) {
 		this.isFinished = b;
 	}

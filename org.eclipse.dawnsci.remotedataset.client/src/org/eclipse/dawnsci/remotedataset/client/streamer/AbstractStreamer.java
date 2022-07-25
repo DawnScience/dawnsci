@@ -58,6 +58,7 @@ abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
 	}
 	
 	
+	@Override
 	public void run() {
 		
 		isFinished = false;
@@ -157,6 +158,7 @@ abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
 	 * 
 	 * @throws InterruptedException
 	 */
+	@Override
 	public T take() throws InterruptedException {
 		T bi = queue.take(); // Might get interrupted
 		if (bi == getQueueEndObject()) {
@@ -170,13 +172,16 @@ abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
 	protected abstract T getQueueEndObject();
 
 
+	@Override
 	public long getDroppedImageCount() {
 		return droppedImages;
 	}
+	@Override
 	public long getReceivedImageCount() {
 		return receivedImages;
 	}
 
+	@Override
 	public void start() {
 		Thread thread = new Thread(this);
 		thread.setPriority(Thread.MIN_PRIORITY);
@@ -189,6 +194,7 @@ abstract class AbstractStreamer<T> implements IStreamer<T>, Runnable {
 	 * Call to tell the streamer to stop adding images to its queue.
 	 * @param b
 	 */
+	@Override
 	public void setFinished(boolean b) {
 		this.isFinished = b;
 	}
