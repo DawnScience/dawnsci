@@ -42,12 +42,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>nexus-template</id>
-			<modules>
-				<module>org.eclipse.dawnsci.nexus.template.product</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>nexus-validation</id>
 			<modules>
 				<module>org.eclipse.dawnsci.nexus.validation.product</module>
