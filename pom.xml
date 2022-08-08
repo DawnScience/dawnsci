@@ -16,7 +16,6 @@
 	</parent>
 
 	<modules>
-		<module>org.eclipse.dawnsci.hdf5.editor</module>
 		<module>org.eclipse.dawnsci.hdf5.model</module>
 	</modules>
 
