@@ -41,16 +41,12 @@ class MJPGStreamer extends AbstractNonCachingStreamer<BufferedImage> {
 
 	@Override
 	protected BufferedImage getFromStream(ByteArrayInputStream bais) throws Exception {
-		try {
-			ImageInputStream iis = ImageIO.createImageInputStream(bais);
-			
+		try (ImageInputStream iis = ImageIO.createImageInputStream(bais)) {
 			BufferedImage bi = RemoteLoader.readFromImageStream(iis);
 			if (bi == null) {
 				return ImageIO.read(iis);
 			}
 			return bi;
-		} finally {
-			bais.close();
 		}
 	}
 }
